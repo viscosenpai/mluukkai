@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Countries = ({filterCountries}) => {
-  return filterCountries.map((country, index) => {
-    return <p key={index}>{country.name}</p>
+const Countries = props => {
+  return props.filterCountries.map((country, index) => {
+    return <p key={index}>{country.name} <button onClick={() => props.showCountry(index)}>show</button></p>
   })
 }
 

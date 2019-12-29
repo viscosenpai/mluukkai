@@ -23,11 +23,13 @@ const Result = props => {
 
   const counts = filterCountries.length
   console.log('counts', counts)
-  if (counts === 1) {
+  if (counts === 0) {
+    return <p>prease input filter</p>
+  } else if (counts === 1) {
     const country = filterCountries.shift()
     console.log(country)
     return <Country country={country} />
-  } else if (counts === 0 || counts >= 10) {
+  } else if (counts >= 10) {
     return (
       <p>Too many matches, specify another filter</p>
     )

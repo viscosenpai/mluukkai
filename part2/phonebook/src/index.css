@@ -1,8 +1,19 @@
-.error {
+.notice {
   color: green;
   background: lightgray;
   font-size: 20px;
   border-color: green;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightgray;
+  font-size: 20px;
+  border-color: red;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;

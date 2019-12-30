@@ -11,8 +11,9 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    personsService.getAll().then(initialNotes => {
-      setPersons(initialNotes)
+    personsService.getAll().then(initialPersons => {
+      console.log(initialPersons)
+      setPersons(initialPersons)
     })
   }, [])
 
@@ -26,10 +27,19 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      personsService.create(newPerson).then(initialNotes => {
-        setPersons(persons.concat(initialNotes))
+      personsService.create(newPerson).then(initialPersons => {
+        setPersons(persons.concat(initialPersons))
         setNewName('')
         setNewNumber('')
+      })
+    }
+  }
+
+  const deleteName = id => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personsService.deleteObject(id).then(res => {
+        setPersons(persons.filter(p => p.id !== id))
       })
     }
   }
@@ -53,7 +63,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm name={newName} number={newNumber} addName={addName} nameChange={handleNameChange} numberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deleteName={deleteName} />
       {/* <div>debug: {newName}</div> */}
     </div>
   )

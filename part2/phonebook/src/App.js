@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personsService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personsService.getAll().then(initialPersons => {
@@ -19,8 +21,7 @@ const App = () => {
   const addName = event => {
     event.preventDefault()
     const existName = persons.map(person => person.name)
-    if (!existName.indexOf(newName)) {
-      console.log(newName)
+    if (existName.indexOf(newName) >= 0) {
       const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
       if (result) {
         const person = persons.find(p => p.name === newName)
@@ -29,6 +30,12 @@ const App = () => {
           setPersons(persons.map(person => person.name !== newName ? person : initialPersons))
           setNewName('')
           setNewNumber('')
+          setMessage(
+            `Changed Number is ${newNumber}`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
       }
     } else {
@@ -40,7 +47,14 @@ const App = () => {
         setPersons(persons.concat(initialPersons))
         setNewName('')
         setNewNumber('')
+        setMessage(
+          `Added ${newName}`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
+      
     }
   }
 
@@ -68,6 +82,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filter={filter} filterName={handlefilterName} />
       <h2>add a new</h2>
       <PersonForm name={newName} number={newNumber} addName={addName} nameChange={handleNameChange} numberChange={handleNumberChange} />

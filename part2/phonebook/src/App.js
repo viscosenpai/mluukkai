@@ -12,7 +12,6 @@ const App = () => {
 
   useEffect(() => {
     personsService.getAll().then(initialPersons => {
-      console.log(initialPersons)
       setPersons(initialPersons)
     })
   }, [])
@@ -21,7 +20,17 @@ const App = () => {
     event.preventDefault()
     const existName = persons.map(person => person.name)
     if (!existName.indexOf(newName)) {
-      alert(`${newName} is already added to phonebook`)
+      console.log(newName)
+      const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      if (result) {
+        const person = persons.find(p => p.name === newName)
+        const changePerson = { ...person, number: newNumber }
+        personsService.update(person.id, changePerson).then(initialPersons => {
+          setPersons(persons.map(person => person.name !== newName ? person : initialPersons))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
     } else {
       const newPerson = {
         name: newName,

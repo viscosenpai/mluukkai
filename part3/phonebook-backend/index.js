@@ -50,9 +50,13 @@ app.post('/api/persons', (request, response) => {
   const body = request.body
 
   console.log(request.body)
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return response.status(400).json({
-      error: 'Add name missing'
+      error: 'Ther name of number missing'
+    })
+  } else if (persons.find(p => p.name === body.name)) {
+    return response.status(400).json({
+      error: `The ${body.name} already exists in the phonebook`
     })
   }
 

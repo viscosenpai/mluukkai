@@ -4,7 +4,7 @@ const Persons = props => {
 
   const showPersons = () => {
     const filterPersons = props.persons.filter((person, index) => {
-      return (person.name).toLowerCase().indexOf(props.filter) >= 0
+      return (person.name).indexOf(props.filter) !== -1
     })
     return filterPersons
   }

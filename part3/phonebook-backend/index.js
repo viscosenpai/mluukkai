@@ -39,10 +39,6 @@ let persons = [
   }
 ]
 
-const generateId = () => {
-  return Math.floor(Math.random() * Math.floor(1000))
-}
-
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -68,20 +64,19 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
-    number: body.number,
-    id: generateId()
-  }
-  persons = persons.concat(person)
-  response.json(persons)
+    number: body.number
+  })
+  person.save().then(savedPerson => {
+    res.json(savedPerson.toJSON())
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
+  Person.findByIdAndRemove(request.params.id).then(result => {
+    response.status(204).end()
+  })
 })
 
 app.get('/info', (request, response) => {

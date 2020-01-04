@@ -97,11 +97,12 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.get('/info', (request, response) => {
-  const count = persons.length
-  const date = new Date()
-  const result = `<p>Phonebook has info for ${count} people<p><p>${date}</p>`
-
-  response.send(result)
+  Person.find({}).then(persons => {
+    const count = persons.length
+    const date = new Date()
+    const result = `<p>Phonebook has info for ${count} people<p><p>${date}</p>`
+    response.send(result)
+  })
 })
 
 const errorHandler = (error, request, response, next) => {

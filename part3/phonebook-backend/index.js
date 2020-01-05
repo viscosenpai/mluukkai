@@ -70,7 +70,8 @@ app.post('/api/persons', (request, response, next) => {
 
   const person = new Person({
     name: body.name,
-    number: body.number
+    number: body.number,
+    date: new Date()
   })
   person.save().then(savedPerson => savedPerson.toJSON())
   .then(savedAndFormattedPerson => {
@@ -107,6 +108,7 @@ app.get('/info', (request, response) => {
 })
 
 const errorHandler = (error, request, response, next) => {
+  console.log(error.name)
   console.log(error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
